@@ -505,7 +505,7 @@ def evq():
         ["7", "Apakah hasil menjawab pertanyaan utama?", verdict("Sebagian"),
          'Efek oven terbukti dan kondisi terbaik ditemukan; interaksi model tidak terdeteksi. <a href="#rp7">Lihat bagian 7</a>.'],
     ]
-    return ('<div class="callout a"><b>Report Project versi 2: evaluasi hasil terhadap Design Project.</b> '
+    return ('<div class="callout g"><b>Report Project versi 2: evaluasi hasil terhadap Design Project.</b> '
             f'{I(14)} pertanyaan dijawab dengan {I(N_CR)} cek silang dan {I(len(FILES))} file hasil. '
             '<b>Data pada project ini adalah simulasi.</b></div>' +
             '<div class="scroll"><table class="evq"><tr><th>No</th><th>Pertanyaan evaluasi</th><th>Verdict</th><th>Ringkasan</th></tr>' +
@@ -551,6 +551,13 @@ def main():
     nav_old = re.search(r'<div class="links" data-tab="report" hidden>.*?</div>', src, re.S).group(0)
     html = src[:r] + body_pane + src[src.index("</main>"):]
     html = html.replace(nav_old, NAV_REPORT, 1)
+    # Nav sesuai skill: tombol Design dan Report berdampingan dulu, baru dua grup link
+    nm = re.search(r'<nav aria-label="Project navigation">(.*?)</nav>', html, re.S)
+    inner = nm.group(1)
+    btns = re.findall(r'<button type="button" class="tab[^"]*"[^>]*>.*?</button>', inner, re.S)
+    links = re.findall(r'<div class="links" data-tab="[a-z]+"[^>]*>.*?</div>', inner, re.S)
+    assert len(btns) == 2 and len(links) == 2, (len(btns), len(links))
+    html = html.replace(nm.group(0), '<nav aria-label="Project navigation">' + "".join(btns) + "".join(links) + "</nav>", 1)
     # 2. CSS tambahan sebelum </style>
     css = (HERE / "report.css").read_text(encoding="utf-8")
     assert html.count("</style>") == 1
