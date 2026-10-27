@@ -2,7 +2,7 @@
 
 # Project 12: Process Comparison Analysis
 
-**Status: Selesai di branch (belum digabung ke main).** Halaman project (Design dan Report) ada di [`design-and-report/index.html`](design-and-report/index.html). Dashboard ada di `dashboard/app.py` (belum dipublikasikan). Notebook di `notebooks/analysis.ipynb`, one-sheet di `outputs/one_sheet.pdf`.
+**Status: Selesai.** Halaman project (Design dan Report) ada di [`design-and-report/index.html`](design-and-report/index.html). Dashboard ada di `project/code/3-presentation/streamlit/app.py` (belum dipublikasikan). Notebook di `project/results/3-presentation/analysis.ipynb`, one-sheet di `project/results/3-presentation/one_sheet.pdf`.
 
 **Tujuan:** membandingkan kekuatan glue pada perekatan camera cover glass smartphone antar kondisi proses (sebelum oven, setelah oven 1 jam, setelah baked) dan antar model (Model A dan Model B), untuk memilih kondisi proses terbaik berdasarkan bukti.
 
@@ -11,7 +11,7 @@
 | Kategori | Manufaktur smartphone |
 | Tingkat | Mudah |
 | Data | **Data simulasi** yang meniru format file mesin push test |
-| Tools | DuckDB + SQL, Python (pandas, SciPy, statsmodels) |
+| Tools | DuckDB + SQL, Python (pandas, SciPy, statsmodels), Streamlit, Jupyter |
 
 ## 1. Problem
 
@@ -21,17 +21,17 @@ Rancangan memecahnya menjadi 14 pertanyaan (9 Utama, 4 Pendukung, 1 Tambahan). D
 
 ## 2. Data
 
-- **Data simulasi.** Angka menggambarkan data buatan, bukan lini produksi. Parameter ground truth ada di `scripts/common.py` dan `data/ground_truth.md`.
-- 60 file CSV berformat mesin (`data/machine_files/`): 6 kombinasi model x kondisi, 10 sesi per kombinasi, 10 cover glass per sesi, dibuat Juli sampai September 2026.
+- **Data simulasi.** Angka menggambarkan data buatan, bukan lini produksi. Parameter ground truth ada di `project/code/common.py` dan `project/docs/ground_truth.md`.
+- 60 file CSV berformat mesin (`project/data/raw/machine_files/`, tidak di-commit; dibuat ulang oleh skrip 01, contoh kecil di `project/data/sample/`): 6 kombinasi model x kondisi, 10 sesi per kombinasi, 10 cover glass per sesi, dibuat Juli sampai September 2026.
 - 615 baris data mentah, di antaranya 15 baris kotor (2,4%): baris ganda, gaya nol, dan gaya kosong. 600 baris dipakai setelah cleaning.
-- Tabel di DuckDB: `test_sessions`, `push_results`, `dim_condition`, dan `group_summary`. Kamus data di `docs/data_dictionary.md`.
+- Tabel di DuckDB: `test_sessions`, `push_results`, `dim_condition`, dan `group_summary`. Kamus data di `project/docs/data_dictionary.md`.
 
 ## 3. Analysis
 
 - **Efek oven terbukti.** Gaya setelah oven 1 jam rata-rata 747 g lebih tinggi dibanding sebelum oven (CI 95% 552 s.d. 943 g, p < 0,001).
 - **Setelah baked tidak berbeda dengan setelah oven 1 jam** (selisih 183 g, p terkoreksi 0,13).
 - **Model A dan Model B berbeda kecil.** Sebelum oven, Model A lebih tinggi 344 g; setelah baked 307 g. Keduanya di bawah batas praktis 500 g. Setelah oven 1 jam tidak berbeda.
-- **Interaksi model x oven tidak terdeteksi.** Daya deteksi hanya ±554 g, sedangkan selisih yang ditanam 624 g. Ini kesalahan perancangan (lihat Batasan).
+- **Interaksi model x oven tidak terdeteksi** (p 0,39). Daya deteksi hanya ±554 g, sedangkan selisih yang ditanam 624 g. Ini kesalahan perancangan (lihat Batasan).
 - **Kapabilitas memenuhi target Cpk 1,33** pada semua kombinasi. Cpk Model A sebelum oven (1,46) ditarik oleh satu sesi S037 yang sangat menyebar; tanpa sesi itu 1,93.
 - **Tidak ada tren antar sesi** dan tidak ada perbedaan antar bonder atau operator.
 - Cek silang SQL vs pandas dan ringkasan mesin: 28 dari 28 PASS.
@@ -50,58 +50,47 @@ Penurunan fail rate estimasi (estimated, asumsi sebaran normal): sekitar 5,6 ppm
 - **Interaksi tidak terdeteksi.** Daya tidak dihitung sebelum data dibuat (kesalahan perancangan). Dicatat jujur, tidak diperbaiki dengan mengubah parameter setelah melihat hasil.
 - Satu sesi (S037) menentukan semua NG dan sangat memengaruhi Cpk Model A sebelum oven.
 - Unit bersarang dalam sesi; uji per sesi dilaporkan sebagai pembanding. Residual tidak normal, sehingga Mann-Whitney juga dilaporkan.
-- Asumsi (label di `docs/definitions.md`): batas praktis 500 g, target Cpk 1,33, estimasi ppm dengan sebaran normal, koreksi Holm.
-- Dashboard belum dipublikasikan. Repositori belum digabung ke main.
+- Asumsi (label di `project/docs/definitions.md`): batas praktis 500 g, target Cpk 1,33, estimasi ppm dengan sebaran normal, koreksi Holm.
+- Dashboard belum dipublikasikan.
 
 ## Menjalankan
 
-Dari root repo, urutan berikut (sekali jalan dari nol):
+Dari root repo (sekali jalan dari nol):
 
 ```bash
-pip install -r requirements.txt
-python scripts/01_generate_machine_files.py
-python scripts/02_parse_load.py
-python scripts/03_sql_views.py
-python scripts/04_crosscheck.py
-python scripts/05_stats.py
-python scripts/06_capability.py
-python scripts/07_recommend_validate.py
-python scripts/08_one_sheet.py
-python scripts/09_build_notebook.py
-python design-and-report/src/build_report.py
-# dashboard: streamlit run dashboard/app.py
+pip install -r project/requirements.txt
+sh project/code/run_all.sh
+# dashboard: cd project && streamlit run code/3-presentation/streamlit/app.py
 ```
+
+`run_all.sh` menjalankan skrip berurutan menurut nomor: 01 generate, 02 parse dan load, 03 SQL views, 04 cek silang, 05 uji, 06 kapabilitas, 07 rekomendasi dan validasi, 08 one-sheet, 09 build notebook (dieksekusi dengan nbconvert), 10 bersihkan notebook, 11 README, lalu `design-and-report/src/build_report.py`.
 
 ## Struktur repository
 
 ```
 index.html                    pengalihan ke design-and-report/
-README.md                     dokumen ini
-requirements.txt
+README.md                     dokumen ini (dibuat oleh 11_build_readme.py)
 design-and-report/
   index.html                  halaman project (Design + Report)
   src/                        page_v1.html (pane Design), report.css, report_lib.py, build_report.py
-scripts/
-  common.py                   path dan parameter (blok GT hanya dibaca 01 dan 07)
-  01_generate_machine_files.py
-  02_parse_load.py
-  03_sql_views.py
-  04_crosscheck.py
-  05_stats.py
-  06_capability.py
-  07_recommend_validate.py
-  08_one_sheet.py
-  09_build_notebook.py
-dashboard/app.py                 dashboard Streamlit (4 halaman, membaca outputs/)
-notebooks/analysis.ipynb         analisis dengan output tersimpan
-sql/
-  01_group_views.sql
-  02_session_views.sql
-data/
-  machine_files/              60 file CSV simulasi (di-commit)
-  ground_truth.md             fakta yang ditanam
-docs/
-  analysis_plan.md, definitions.md, data_dictionary.md
-outputs/                      CSV hasil analisis dan log cleaning
-pushtest.duckdb               database (tidak di-commit, dibuat ulang dari skrip)
+project/
+  code/
+    common.py                 path dan parameter (blok GT hanya dibaca 01 dan 07)
+    run_all.sh
+    1-data-preparation/python/   01_generate_machine_files.py, 02_parse_load.py
+    2-analysis/python/           03_sql_views.py, 04_crosscheck.py, 05_stats.py, 06_capability.py, 07_recommend_validate.py
+    2-analysis/sql/              01_group_views.sql, 02_session_views.sql
+    3-presentation/python/       08_one_sheet.py, 09_build_notebook.py, 10_finalize_notebook.py, 11_build_readme.py
+    3-presentation/streamlit/    app.py (dashboard 4 halaman)
+  results/
+    1-data-preparation/       cleaning_log.csv, data_quality.csv
+    2-analysis/               CSV hasil analisis
+    3-presentation/           analysis.ipynb, one_sheet.pdf, one_sheet.png
+  data/
+    raw/                      60 file CSV simulasi (tidak di-commit, dibuat ulang oleh skrip 01)
+    sample/                   3 contoh file mesin
+    README.md                 sumber dan catatan data
+  docs/                       analysis_plan.md, definitions.md, data_dictionary.md, ground_truth.md
+  requirements.txt
+  pushtest.duckdb             database (tidak di-commit, dibuat ulang dari skrip)
 ```

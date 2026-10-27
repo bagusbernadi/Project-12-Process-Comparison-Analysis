@@ -1,6 +1,6 @@
-"""Generator Report v2 (Project 12). Membaca outputs/*.csv, merakit design-and-report/index.html.
+"""Generator Report v2 (Project 12). Membaca project/results/*/*.csv, merakit design-and-report/index.html.
 
-Jalankan dari root repo (setelah scripts/01-07 dijalankan berurutan):
+Jalankan dari root repo (setelah project/code/run_all.sh tahap 1-3):
     python design-and-report/src/build_report.py
 Pane Design diambil dari src/page_v1.html dan tidak diubah; dicek identik sebelum dan sesudah.
 """
@@ -13,15 +13,14 @@ import pandas as pd
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
-OUT = ROOT / "outputs"
 sys.path.insert(0, str(HERE))
-sys.path.insert(0, str(ROOT / "scripts"))
+sys.path.insert(0, str(ROOT / "project" / "code"))
 import report_lib as R
 from report_lib import D, I, P, audit, cs, gbars, legend, pill, qa, table
-from common import ALPHA, CPK_TARGET, COND_LABEL, LSL_G, PRACTICAL_DIFF_G
+from common import ALPHA, CPK_TARGET, COND_LABEL, LSL_G, PRACTICAL_DIFF_G, RES_PREP, RES_ANA, RES_PRES, result
 
 # ---------- data ----------
-rd = lambda f: pd.read_csv(OUT / f)
+rd = lambda f: pd.read_csv(result(f))
 dq = {r.metrik: r.nilai for r in rd("data_quality.csv").itertuples()}
 cl = rd("cleaning_log.csv")
 cr = rd("crosscheck.csv")
@@ -50,7 +49,8 @@ FILES = {
     "sensitivity.csv": ("Q11", "Uji sensitivitas batas praktis dan sesi outlier"),
     "ground_truth_check.csv": ("Q13", "Temuan dibandingkan fakta yang ditanam"),
 }
-assert set(FILES) == {p.name for p in OUT.glob("*.csv")}, "ada CSV hasil yang belum terdaftar"
+assert set(FILES) == {p.name for d in (RES_PREP, RES_ANA) for p in d.glob("*.csv")}, "ada CSV hasil yang belum terdaftar"
+assert {p.name for p in RES_PRES.iterdir() if p.is_file()} == {"analysis.ipynb", "one_sheet.pdf", "one_sheet.png"}, "ada file presentasi yang belum terdaftar"
 
 
 def T(pert, uji, perb=None):
@@ -139,9 +139,9 @@ def sec1():
           f'<div class="card"><b>{NG_BERSIH}</b><br>NG setelah cleaning</div>'
           f'<div class="card"><b>{N_CR}</b><br>pemeriksaan cek silang</div></div>')
     callout = ('<div class="callout c"><b>Data project ini adalah simulasi.</b> Angka menggambarkan data buatan yang meniru '
-               'format file mesin push test, bukan lini produksi. Lihat data/ground_truth.md dan docs/definitions.md.</div>')
+               'format file mesin push test, bukan lini produksi. Lihat project/docs/ground_truth.md dan project/docs/definitions.md.</div>')
     rows = [
-        ["File mesin dibaca", N_FILES, "file CSV di data/machine_files"],
+        ["File mesin dibaca", N_FILES, "file CSV di project/data/raw/machine_files"],
         ["Baris data mentah", N_RAW, "termasuk baris kotor yang disisipkan"],
         ["Baris gaya kosong", N_GAP, "dibuang"],
         ["Baris gaya nol", N_GNOL, "dibuang"],
@@ -165,10 +165,12 @@ def sec1():
         ["Selisih setelah oven vs sebelum oven", "rata-rata kiri − kanan", f"{D(q1.selisih_g, 0)} g", I(q1.n_kiri + q1.n_kanan)],
     ])
     return (kp + callout +
-            "<h4>1.1 Data mentah dan kualitas data</h4>" + t11 +
-            "<h4>1.2 Tabel di database dan file hasil</h4>" + t12a + t12b +
-            "<p>Daftar file hasil (CSV) di folder outputs/:</p>" + t12c +
-            "<h4>1.3 Angka kunci</h4>" + t13)
+            "<h4>1.1 Data mentah dan kualitas data</h4>" + '<p class="report-note"><b>Tabel 1.1</b> Kualitas data mentah dan baris yang dibuang.</p>' + t11 +
+            "<h4>1.2 Tabel di database dan file hasil</h4>" +
+            '<p class="report-note"><b>Tabel 1.2a</b> Isi database DuckDB (tidak di-commit; dibuat ulang oleh skrip 02).</p>' + t12a +
+            '<p class="report-note"><b>Tabel 1.2b</b> Validasi: cek silang SQL vs pandas dan ringkasan mesin.</p>' + t12b +
+            '<p class="report-note"><b>Tabel 1.2c</b> Daftar file hasil (CSV) di folder project/results/.</p>' + t12c +
+            "<h4>1.3 Angka kunci</h4>" + '<p class="report-note"><b>Tabel 1.3</b> KPI utama dari group_summary.csv dan capability.csv.</p>' + t13)
 
 
 # ---------- bagian 2 ----------
@@ -291,7 +293,7 @@ def sec2():
                f'setelah pembersihan NG {NG_BERSIH} dan rata-rata {MEAN_BERSIH} g. Hasil berubah, sehingga pembersihan diperlukan.')
     q13_txt = (f'{I(gt_ok)} dari {I(N_GT)} fakta terdeteksi. Fakta 3 (interaksi) tidak terdeteksi karena daya uji rendah; '
                f'lihat 7.6. Efek oven, perbedaan model, sesi outlier, dan data kotor dipulihkan.')
-    q14_txt = f"Ya. {I(N_PASS)} dari {I(N_CR)} pemeriksaan cek silang lulus, termasuk per kombinasi dan per sesi (scripts/04_crosscheck.py)."
+    q14_txt = f"Ya. {I(N_PASS)} dari {I(N_CR)} pemeriksaan cek silang lulus, termasuk per kombinasi dan per sesi (project/code/2-analysis/python/04_crosscheck.py)."
     s26 = (t26a + qa("Q12", "Berapa data yang tidak valid, dan apakah hasil berubah setelah diperbaiki?", "Utama · audit kualitas data", q12_txt) +
            "<p class=\"report-note\">Tabel 2.6a: hasil cek silang dan efek pembersihan.</p>" +
            qa("Q13", "Apakah analisis menemukan semua fakta yang sengaja ditanam?", "Utama · cocokkan dengan ground truth", q13_txt, warn=True) +
@@ -310,7 +312,7 @@ def sec2():
 
 def sec3():
     rows = [
-        ["Sumber data", "Data simulasi yang meniru format file mesin push test", "Simulasi meniru format file mesin, dibuat di scripts/01", verdict("Sesuai")],
+        ["Sumber data", "Data simulasi yang meniru format file mesin push test", "Simulasi meniru format file mesin, dibuat di project/code/1-data-preparation/python/01_generate_machine_files.py", verdict("Sesuai")],
         ["Ukuran", "±60 sesi, ±10 cover glass per sesi, ±600 hasil", f"{N_SESI} sesi, {N_CLEAN} cover glass setelah cleaning", verdict("Sesuai")],
         ["Tabel", "test_sessions, push_results, dim_condition, group_summary", "4 tabel di DuckDB dan 2 view SQL (v_push, v_group_summary)", verdict("Sesuai")],
         ["Pengaturan uji", "Mode DS20KG, destructive, kecepatan 0,3 mm/s", "Sama di setiap file", verdict("Sesuai")],
@@ -326,12 +328,12 @@ def sec3():
 
 def sec4():
     rows = [
-        ["Python (pandas, SciPy, statsmodels)", "Membuat data, parsing, uji t, ANOVA, Tukey, Levene, Cpk", "scripts/01 s.d. 07", verdict("Sesuai")],
-        ["DuckDB + SQL", "Database dan view ringkasan", "pushtest.duckdb (tidak di-commit), sql/01 dan sql/02", verdict("Sesuai")],
-        ["Jupyter Notebook", "Langkah analisis Q1–Q14 dengan grafik", "notebooks/analysis.ipynb (dibangun dan dieksekusi)", verdict("Sesuai")],
-        ["Streamlit", "Dashboard 4 halaman, dipublikasikan", "dashboard/app.py; belum dipublikasikan", verdict("Sebagian")],
+        ["Python (pandas, SciPy, statsmodels)", "Membuat data, parsing, uji t, ANOVA, Tukey, Levene, Cpk", "project/code/1-data-preparation dan 2-analysis (skrip 01 s.d. 07)", verdict("Sesuai")],
+        ["DuckDB + SQL", "Database dan view ringkasan", "project/pushtest.duckdb (tidak di-commit), project/code/2-analysis/sql/01 dan 02", verdict("Sesuai")],
+        ["Jupyter Notebook", "Langkah analisis Q1–Q14 dengan grafik", "project/results/3-presentation/analysis.ipynb (dibangun dan dieksekusi)", verdict("Sesuai")],
+        ["Streamlit", "Dashboard 4 halaman, dipublikasikan", "project/code/3-presentation/streamlit/app.py; belum dipublikasikan", verdict("Sebagian")],
         ["GitHub", "Kode, contoh file, README", "Branch project-12-build; belum digabung ke main", verdict("Sebagian")],
-        ["Markdown", "README", "README.md dan docs/", verdict("Sesuai")],
+        ["Markdown", "README", "README.md dan project/docs/", verdict("Sesuai")],
     ]
     return ("<p>Notebook dan dashboard sudah dibuat. Dashboard belum dipublikasikan.</p>"
             + table(["Tool", "Rancangan", "Realisasi", "Verdict"], rows))
@@ -339,48 +341,51 @@ def sec4():
 
 def sec5():
     steps = [
-        ("1", "Aturan uji dan KPI", "docs/analysis_plan.md, docs/definitions.md", "Sesuai + penyesuaian"),
-        ("2", "Struktur tabel dan kamus data", "docs/data_dictionary.md", "Sesuai"),
-        ("3", "Buat file CSV simulasi dan ground truth", "scripts/01_generate_machine_files.py, data/ground_truth.md", "Sesuai"),
-        ("4", "Parsing dan cleaning", "scripts/02_parse_load.py, outputs/cleaning_log.csv", "Sesuai"),
-        ("5", "Muat ke DuckDB", "scripts/02_parse_load.py (pushtest.duckdb)", "Sesuai"),
-        ("6", "Statistik deskriptif dengan view SQL", "sql/01_group_views.sql, sql/02_session_views.sql, scripts/03_sql_views.py", "Sesuai"),
-        ("7", "Cek silang SQL dan Python (Q14)", "scripts/04_crosscheck.py", "Sesuai"),
-        ("8", "Uji statistik Q1–Q5 dan Q7", "scripts/05_stats.py", "Sesuai + tambahan"),
-        ("9", "Cpk, fail rate, dan sumber variasi (Q6, Q8–Q10)", "scripts/06_capability.py", "Sesuai + tambahan"),
-        ("10", "Rekomendasi dan validasi ground truth (Q11, Q13)", "scripts/07_recommend_validate.py", "Sesuai + penyesuaian"),
-        ("11", "Dashboard dan one-sheet", "dashboard/app.py, scripts/08_one_sheet.py", "Sesuai"),
-        ("12", "README dan finalisasi repositori", "README.md; branch belum digabung", "Sebagian"),
+        ("1", "Aturan uji dan KPI", "project/docs/analysis_plan.md, project/docs/definitions.md", "Sesuai + penyesuaian"),
+        ("2", "Struktur tabel dan kamus data", "project/docs/data_dictionary.md", "Sesuai"),
+        ("3", "Buat file CSV simulasi dan ground truth", "project/code/1-data-preparation/python/01_generate_machine_files.py, project/docs/ground_truth.md", "Sesuai"),
+        ("4", "Parsing dan cleaning", "project/code/1-data-preparation/python/02_parse_load.py, project/results/1-data-preparation/cleaning_log.csv", "Sesuai"),
+        ("5", "Muat ke DuckDB", "project/code/1-data-preparation/python/02_parse_load.py (project/pushtest.duckdb)", "Sesuai"),
+        ("6", "Statistik deskriptif dengan view SQL", "project/code/2-analysis/sql/01_group_views.sql, 02_session_views.sql, project/code/2-analysis/python/03_sql_views.py", "Sesuai"),
+        ("7", "Cek silang SQL dan Python (Q14)", "project/code/2-analysis/python/04_crosscheck.py", "Sesuai"),
+        ("8", "Uji statistik Q1–Q5 dan Q7", "project/code/2-analysis/python/05_stats.py", "Sesuai + tambahan"),
+        ("9", "Cpk, fail rate, dan sumber variasi (Q6, Q8–Q10)", "project/code/2-analysis/python/06_capability.py", "Sesuai + tambahan"),
+        ("10", "Rekomendasi dan validasi ground truth (Q11, Q13)", "project/code/2-analysis/python/07_recommend_validate.py", "Sesuai + penyesuaian"),
+        ("11", "Dashboard dan one-sheet", "project/code/3-presentation/streamlit/app.py, project/code/3-presentation/python/08_one_sheet.py", "Sesuai"),
+        ("12", "README dan finalisasi repositori", "README.md (dibuat dari CSV oleh project/code/3-presentation/python/11_build_readme.py); sudah di main", "Sesuai"),
     ]
     t = table(["No", "Langkah rancangan", "Realisasi (file)", "Verdict"],
               [[a, b, c, verdict(d)] for a, b, c, d in steps])
     card = ('<div class="card"><h4>Penyesuaian dan improvisasi yang tidak ada di rancangan</h4><ul>'
-            '<li>Penomoran skrip 01–07 mengikuti urutan data (aturan portofolio). Tabel di bawah memetakan nama rancangan ke nama file.</li>'
+            '<li>Skrip 01–11 diberi nomor menurut urutan eksekusi dan dikelompokkan per tahap di project/code/. Tabel di bawah memetakan nama rancangan ke nama file.</li>'
             '<li>Ditambahkan sensitivitas per sesi, Mann-Whitney, dan koreksi Holm untuk Q3 dan Q4.</li>'
             f'<li>Ditambahkan uji sensitivitas batas praktis ({I(250)}, {I(500)}, {I(1000)} g) dan analisis tanpa sesi S037.</li>'
             '<li>Ditambahkan perhitungan daya deteksi interaksi (MDE) setelah data dibuat. Ini tidak direncanakan.</li>'
-            '<li>Batas praktis 500 g dan target Cpk 1,33 adalah asumsi (lihat docs/definitions.md).</li>'
+            '<li>Batas praktis 500 g dan target Cpk 1,33 adalah asumsi (lihat project/docs/definitions.md).</li>'
             '</ul></div>')
     mapping = [
-        ("scripts/generate_machine_files.py", "scripts/01_generate_machine_files.py"),
-        ("scripts/parse_load.py", "scripts/02_parse_load.py"),
-        ("sql/", "sql/01_group_views.sql, sql/02_session_views.sql, scripts/03_sql_views.py"),
-        ("(tidak ada di rancangan)", "scripts/04_crosscheck.py, 05_stats.py, 06_capability.py, 07_recommend_validate.py"),
+        ("scripts/generate_machine_files.py", "project/code/1-data-preparation/python/01_generate_machine_files.py"),
+        ("scripts/parse_load.py", "project/code/1-data-preparation/python/02_parse_load.py"),
+        ("sql/", "project/code/2-analysis/sql/01_group_views.sql, 02_session_views.sql, project/code/2-analysis/python/03_sql_views.py"),
+        ("(tidak ada di rancangan)", "project/code/2-analysis/python/04_crosscheck.py, 05_stats.py, 06_capability.py, 07_recommend_validate.py"),
         ("index.html (rancangan)", "design-and-report/src/page_v1.html (pane Design tidak diubah); design-and-report/index.html dibangun ulang; index.html root = pengalihan"),
-        ("notebooks/analysis.ipynb", "scripts/09_build_notebook.py"),
-        ("dashboard/app.py", "dashboard/app.py (Streamlit, 4 halaman)"),
-        ("outputs/one_sheet.pdf / .png", "scripts/08_one_sheet.py"),
-        ("(tidak ada di rancangan)", "design-and-report/src/build_report.py, report_lib.py, report.css"),
+        ("outputs/*.csv", "project/results/1-data-preparation, 2-analysis (per tahap)"),
+        ("data/machine_files/", "project/data/raw/machine_files (tidak di-commit; contoh di project/data/sample)"),
+        ("docs/, data/ground_truth.md", "project/docs/"),
+        ("notebooks/analysis.ipynb", "project/results/3-presentation/analysis.ipynb (project/code/3-presentation/python/09_build_notebook.py, 10_finalize_notebook.py)"),
+        ("dashboard/app.py", "project/code/3-presentation/streamlit/app.py (Streamlit, 4 halaman)"),
+        ("outputs/one_sheet.pdf / .png", "project/results/3-presentation/one_sheet.pdf dan .png (project/code/3-presentation/python/08_one_sheet.py)"),
+        ("(tidak ada di rancangan)", "design-and-report/src/build_report.py, report_lib.py, report.css; project/code/common.py, run_all.sh; project/code/3-presentation/python/11_build_readme.py"),
     ]
     mt = table(["Rancangan", "Realisasi"], [[a, b] for a, b in mapping])
-    return ("<p>Sebelas dari dua belas langkah dikerjakan. Dashboard sudah dibuat, belum dipublikasikan.</p>" + t + card +
+    return ("<p>Dua belas dari dua belas langkah dikerjakan. Dashboard sudah dibuat, belum dipublikasikan.</p>" + t + card +
             "<h4>Perubahan nama dan lokasi file terhadap rancangan</h4>" + mt)
 
 
 def exists_status(path):
     p = ROOT / path
     if path.endswith("*.csv"):
-        return "Ada" if any((ROOT / "data/machine_files").glob("*.csv")) else "Belum ada"
+        return "Ada" if any((ROOT / "project/data/raw/machine_files").glob("*.csv")) else "Belum ada"
     if path == "pushtest.duckdb":
         return "Tidak di-commit" if p.exists() else "Belum ada"
     return "Ada" if p.exists() else "Belum ada"
@@ -388,31 +393,31 @@ def exists_status(path):
 
 def sec6():
     outs = [
-        ("Dashboard interaktif", "Utama", "Sebagian", "dashboard/app.py; belum dipublikasikan"),
-        ("One-sheet infografik", "Utama", "Tercapai", "outputs/one_sheet.png dan .pdf"),
-        ("Database dan query SQL", "Utama", "Tercapai", "pushtest.duckdb (tidak di-commit), sql/*.sql"),
-        ("Generator dan parser file mesin", "Utama", "Tercapai", "scripts/01_generate_machine_files.py, 02_parse_load.py"),
-        ("Notebook analisis", "Utama", "Tercapai", "notebooks/analysis.ipynb"),
+        ("Dashboard interaktif", "Utama", "Sebagian", "project/code/3-presentation/streamlit/app.py; belum dipublikasikan"),
+        ("One-sheet infografik", "Utama", "Tercapai", "project/results/3-presentation/one_sheet.png dan .pdf"),
+        ("Database dan query SQL", "Utama", "Tercapai", "project/pushtest.duckdb (tidak di-commit), project/code/2-analysis/sql/*.sql"),
+        ("Generator dan parser file mesin", "Utama", "Tercapai", "project/code/1-data-preparation/python/01_generate_machine_files.py, 02_parse_load.py"),
+        ("Notebook analisis", "Utama", "Tercapai", "project/results/3-presentation/analysis.ipynb"),
         ("Laporan temuan dan rekomendasi", "Utama", "Tercapai", "README.md dan halaman Report ini"),
-        ("Repositori GitHub", "Utama", "Sebagian", "Branch project-12-build; belum digabung ke main"),
+        ("Repositori GitHub", "Utama", "Tercapai", "Branch main"),
         ("Slide presentasi", "Opsional", "Tidak dibuat", "Belum dibuat"),
     ]
     t = table(["Output", "Label", "Status", "Bukti"], [[a, b, verdict_out(c), d] for a, b, c, d in outs])
     docs = [("index.html (rancangan)", "A", "Utama", "design-and-report/index.html"),
-            ("docs/analysis_plan.md", "A", "Utama", "docs/analysis_plan.md"),
-            ("docs/data_dictionary.md", "A", "Utama", "docs/data_dictionary.md"),
-            ("scripts/01_generate_machine_files.py", "B", "Utama", "scripts/01_generate_machine_files.py"),
-            ("data/ground_truth.md", "B", "Utama", "data/ground_truth.md"),
-            ("data/machine_files/*.csv", "B", "Utama", "data/machine_files/*.csv"),
-            ("scripts/parse_load.py", "B", "Utama", "scripts/02_parse_load.py"),
-            ("outputs/cleaning_log.csv", "B", "Utama", "outputs/cleaning_log.csv"),
-            ("pushtest.duckdb", "B", "Utama", "pushtest.duckdb"),
-            ("requirements.txt", "B", "Utama", "requirements.txt"),
-            ("sql/", "C", "Utama", "sql/"),
-            ("notebooks/analysis.ipynb", "C", "Utama", "notebooks/analysis.ipynb"),
-            ("outputs/test_results.csv", "C", "Utama", "outputs/test_results.csv"),
-            ("dashboard/app.py", "D", "Utama", "dashboard/app.py"),
-            ("outputs/one_sheet.pdf / .png", "D", "Utama", "outputs/one_sheet.pdf"),
+            ("docs/analysis_plan.md", "A", "Utama", "project/docs/analysis_plan.md"),
+            ("docs/data_dictionary.md", "A", "Utama", "project/docs/data_dictionary.md"),
+            ("scripts/01_generate_machine_files.py", "B", "Utama", "project/code/1-data-preparation/python/01_generate_machine_files.py"),
+            ("data/ground_truth.md", "B", "Utama", "project/docs/ground_truth.md"),
+            ("data/machine_files/*.csv", "B", "Utama", "project/data/raw/machine_files/*.csv"),
+            ("scripts/parse_load.py", "B", "Utama", "project/code/1-data-preparation/python/02_parse_load.py"),
+            ("outputs/cleaning_log.csv", "B", "Utama", "project/results/1-data-preparation/cleaning_log.csv"),
+            ("pushtest.duckdb", "B", "Utama", "project/pushtest.duckdb"),
+            ("requirements.txt", "B", "Utama", "project/requirements.txt"),
+            ("sql/", "C", "Utama", "project/code/2-analysis/sql"),
+            ("notebooks/analysis.ipynb", "C", "Utama", "project/results/3-presentation/analysis.ipynb"),
+            ("outputs/test_results.csv", "C", "Utama", "project/results/2-analysis/test_results.csv"),
+            ("dashboard/app.py", "D", "Utama", "project/code/3-presentation/streamlit/app.py"),
+            ("outputs/one_sheet.pdf / .png", "D", "Utama", "project/results/3-presentation/one_sheet.pdf"),
             ("README.md", "D", "Utama", "README.md"),
             ("slides/", "D", "Opsional", "slides/")]
     drows = []
@@ -492,9 +497,9 @@ def evq():
         ["3", "Apakah dataset sesuai Design Project?", verdict("Sesuai"),
          f'Simulasi meniru format mesin dengan {N_SESI} sesi. <a href="#rp3">Lihat bagian 3</a>.'],
         ["4", "Apakah tools yang digunakan sesuai?", verdict("Sesuai"),
-         'DuckDB, SQL, pandas, SciPy, statsmodels dipakai. Notebook dan dashboard belum. <a href="#rp4">Lihat bagian 4</a>.'],
+         'DuckDB, SQL, pandas, SciPy, statsmodels, Streamlit, dan Jupyter dipakai; dashboard belum dipublikasikan. <a href="#rp4">Lihat bagian 4</a>.'],
         ["5", "Apakah alur pengerjaan sesuai Design Project?", verdict("Sesuai + penyesuaian"),
-         '11 dari 12 langkah dikerjakan; penomoran dan nama file berbeda. <a href="#rp5">Lihat bagian 5</a>.'],
+         '12 dari 12 langkah dikerjakan; penomoran dan lokasi file berbeda dari rancangan. <a href="#rp5">Lihat bagian 5</a>.'],
         ["6", "Apakah project output tercapai?", verdict("Sebagian"),
          "Database, generator, notebook, dashboard, one-sheet, dan laporan jadi; dashboard belum dipublikasikan. <a href=\"#rp6\">Lihat bagian 6</a>."],
         ["7", "Apakah hasil menjawab pertanyaan utama?", verdict("Sebagian"),
