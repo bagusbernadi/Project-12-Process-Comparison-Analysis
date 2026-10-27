@@ -2,7 +2,7 @@
 
 # Project 12: Process Comparison Analysis
 
-**Status: Selesai di branch (belum digabung ke main).** Halaman project (Design dan Report) ada di [`design-and-report/index.html`](design-and-report/index.html). Dashboard, notebook, dan one-sheet belum dibuat.
+**Status: Selesai di branch (belum digabung ke main).** Halaman project (Design dan Report) ada di [`design-and-report/index.html`](design-and-report/index.html). Dashboard ada di `dashboard/app.py` (belum dipublikasikan). Notebook di `notebooks/analysis.ipynb`, one-sheet di `outputs/one_sheet.pdf`.
 
 **Tujuan:** membandingkan kekuatan glue pada perekatan camera cover glass smartphone antar kondisi proses (sebelum oven, setelah oven 1 jam, setelah baked) dan antar model (Model A dan Model B), untuk memilih kondisi proses terbaik berdasarkan bukti.
 
@@ -51,7 +51,7 @@ Penurunan fail rate estimasi (estimated, asumsi sebaran normal): sekitar 5,6 ppm
 - Satu sesi (S037) menentukan semua NG dan sangat memengaruhi Cpk Model A sebelum oven.
 - Unit bersarang dalam sesi; uji per sesi dilaporkan sebagai pembanding. Residual tidak normal, sehingga Mann-Whitney juga dilaporkan.
 - Asumsi (label di `docs/definitions.md`): batas praktis 500 g, target Cpk 1,33, estimasi ppm dengan sebaran normal, koreksi Holm.
-- Dashboard (Streamlit), notebook, dan one-sheet belum dibuat. Repositori belum digabung ke main.
+- Dashboard belum dipublikasikan. Repositori belum digabung ke main.
 
 ## Menjalankan
 
@@ -66,7 +66,10 @@ python scripts/04_crosscheck.py
 python scripts/05_stats.py
 python scripts/06_capability.py
 python scripts/07_recommend_validate.py
+python scripts/08_one_sheet.py
+python scripts/09_build_notebook.py
 python design-and-report/src/build_report.py
+# dashboard: streamlit run dashboard/app.py
 ```
 
 ## Struktur repository
@@ -87,6 +90,10 @@ scripts/
   05_stats.py
   06_capability.py
   07_recommend_validate.py
+  08_one_sheet.py
+  09_build_notebook.py
+dashboard/app.py                 dashboard Streamlit (4 halaman, membaca outputs/)
+notebooks/analysis.ipynb         analisis dengan output tersimpan
 sql/
   01_group_views.sql
   02_session_views.sql

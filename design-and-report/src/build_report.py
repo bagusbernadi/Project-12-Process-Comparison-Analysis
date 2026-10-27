@@ -328,12 +328,12 @@ def sec4():
     rows = [
         ["Python (pandas, SciPy, statsmodels)", "Membuat data, parsing, uji t, ANOVA, Tukey, Levene, Cpk", "scripts/01 s.d. 07", verdict("Sesuai")],
         ["DuckDB + SQL", "Database dan view ringkasan", "pushtest.duckdb (tidak di-commit), sql/01 dan sql/02", verdict("Sesuai")],
-        ["Jupyter Notebook", "Langkah analisis Q1–Q14 dengan grafik", "Belum dibuat", verdict("Belum dikerjakan")],
-        ["Streamlit + Plotly", "Dashboard 4 halaman, dipublikasikan", "Belum dibuat dan belum dipublikasikan", verdict("Belum dikerjakan")],
+        ["Jupyter Notebook", "Langkah analisis Q1–Q14 dengan grafik", "notebooks/analysis.ipynb (dibangun dan dieksekusi)", verdict("Sesuai")],
+        ["Streamlit", "Dashboard 4 halaman, dipublikasikan", "dashboard/app.py; belum dipublikasikan", verdict("Sebagian")],
         ["GitHub", "Kode, contoh file, README", "Branch project-12-build; belum digabung ke main", verdict("Sebagian")],
         ["Markdown", "README", "README.md dan docs/", verdict("Sesuai")],
     ]
-    return ("<p>Notebook dan dashboard belum dibuat dalam sesi ini, sehingga verdict tool untuk keduanya belum dikerjakan.</p>"
+    return ("<p>Notebook dan dashboard sudah dibuat. Dashboard belum dipublikasikan.</p>"
             + table(["Tool", "Rancangan", "Realisasi", "Verdict"], rows))
 
 
@@ -349,7 +349,7 @@ def sec5():
         ("8", "Uji statistik Q1–Q5 dan Q7", "scripts/05_stats.py", "Sesuai + tambahan"),
         ("9", "Cpk, fail rate, dan sumber variasi (Q6, Q8–Q10)", "scripts/06_capability.py", "Sesuai + tambahan"),
         ("10", "Rekomendasi dan validasi ground truth (Q11, Q13)", "scripts/07_recommend_validate.py", "Sesuai + penyesuaian"),
-        ("11", "Dashboard", "Belum dibuat", "Belum dikerjakan"),
+        ("11", "Dashboard dan one-sheet", "dashboard/app.py, scripts/08_one_sheet.py", "Sesuai"),
         ("12", "README dan finalisasi repositori", "README.md; branch belum digabung", "Sebagian"),
     ]
     t = table(["No", "Langkah rancangan", "Realisasi (file)", "Verdict"],
@@ -367,13 +367,13 @@ def sec5():
         ("sql/", "sql/01_group_views.sql, sql/02_session_views.sql, scripts/03_sql_views.py"),
         ("(tidak ada di rancangan)", "scripts/04_crosscheck.py, 05_stats.py, 06_capability.py, 07_recommend_validate.py"),
         ("index.html (rancangan)", "design-and-report/src/page_v1.html (pane Design tidak diubah); design-and-report/index.html dibangun ulang; index.html root = pengalihan"),
-        ("notebooks/analysis.ipynb", "Belum dibuat"),
-        ("dashboard/app.py", "Belum dibuat"),
-        ("outputs/one_sheet.pdf / .png", "Belum dibuat"),
+        ("notebooks/analysis.ipynb", "scripts/09_build_notebook.py"),
+        ("dashboard/app.py", "dashboard/app.py (Streamlit, 4 halaman)"),
+        ("outputs/one_sheet.pdf / .png", "scripts/08_one_sheet.py"),
         ("(tidak ada di rancangan)", "design-and-report/src/build_report.py, report_lib.py, report.css"),
     ]
     mt = table(["Rancangan", "Realisasi"], [[a, b] for a, b in mapping])
-    return ("<p>Sebelas dari dua belas langkah dikerjakan. Dashboard belum dibuat.</p>" + t + card +
+    return ("<p>Sebelas dari dua belas langkah dikerjakan. Dashboard sudah dibuat, belum dipublikasikan.</p>" + t + card +
             "<h4>Perubahan nama dan lokasi file terhadap rancangan</h4>" + mt)
 
 
@@ -388,11 +388,11 @@ def exists_status(path):
 
 def sec6():
     outs = [
-        ("Dashboard interaktif", "Utama", "Tidak dibuat", "Belum dibuat; belum dipublikasikan"),
-        ("One-sheet infografik", "Utama", "Tidak dibuat", "Belum dibuat"),
+        ("Dashboard interaktif", "Utama", "Sebagian", "dashboard/app.py; belum dipublikasikan"),
+        ("One-sheet infografik", "Utama", "Tercapai", "outputs/one_sheet.png dan .pdf"),
         ("Database dan query SQL", "Utama", "Tercapai", "pushtest.duckdb (tidak di-commit), sql/*.sql"),
         ("Generator dan parser file mesin", "Utama", "Tercapai", "scripts/01_generate_machine_files.py, 02_parse_load.py"),
-        ("Notebook analisis", "Utama", "Tidak dibuat", "Belum dibuat"),
+        ("Notebook analisis", "Utama", "Tercapai", "notebooks/analysis.ipynb"),
         ("Laporan temuan dan rekomendasi", "Utama", "Tercapai", "README.md dan halaman Report ini"),
         ("Repositori GitHub", "Utama", "Sebagian", "Branch project-12-build; belum digabung ke main"),
         ("Slide presentasi", "Opsional", "Tidak dibuat", "Belum dibuat"),
@@ -437,8 +437,8 @@ def sec7():
         ["Sembilan pertanyaan Utama terjawab dengan angka dari data", "Q1, Q2, Q4, Q5, Q6, Q8, Q11, Q12, Q13 terjawab; Q5, Q6, Q8, Q11, Q13 bercatatan", "Tercapai"],
         ["Parser membaca semua file tanpa kesalahan dan hitung ulang cocok", f"{N_FILES} file dibaca; {I(N_PASS)} dari {I(N_CR)} pemeriksaan PASS", "Tercapai"],
         ["Kelima fakta yang ditanam ditemukan oleh analisis", f"{I(gt_ok)} dari {I(N_GT)} ditemukan; fakta interaksi tidak", "Sebagian"],
-        ["Orang awam membuka dashboard dan menyebut kondisi terbaik dalam kurang dari 1 menit", "Dashboard belum dibuat", "Belum diuji"],
-        ["Checklist standar terpenuhi (dashboard deploy, README berisi insight dan rekomendasi)", "README dan Report ada; dashboard belum", "Sebagian"],
+        ["Orang awam membuka dashboard dan menyebut kondisi terbaik dalam kurang dari 1 menit", "Dashboard sudah dibuat, belum diuji pembaca awam", "Belum diuji"],
+        ["Checklist standar terpenuhi (dashboard deploy, README berisi insight dan rekomendasi)", "README dan Report ada; dashboard ada, belum dipublikasikan", "Sebagian"],
     ]
     ct = table(["Kriteria", "Bukti", "Status"], [[a, b, verdict_out(c) if c in ("Tercapai", "Sebagian") else PRT(c)] for a, b, c in crit])
     hasil = f'<p><b>Hasil: {I(n_ok_crit)} dari {I(len(crit))} kriteria tercapai penuh.</b></p>'
@@ -453,7 +453,7 @@ def sec7():
     s75 = ('<ul><li>Hitung daya setiap fakta sebelum membuat data simulasi, agar efek kecil tidak diuji tanpa daya.</li>'
            '<li>Tambahkan jumlah sesi per kombinasi, karena uji per unit dengan sesi terbatas mudah terlalu percaya diri.</li>'
            '<li>Catat lot glue per sesi agar pola yang terlihat bisa dipisahkan dari hari atau lot.</li>'
-           '<li>Selesaikan notebook, dashboard, dan one-sheet, lalu minta pembaca awam menguji dashboard.</li></ul>')
+           '<li>Publikasikan dashboard, lalu minta pembaca awam menguji dashboard.</li></ul>')
     s76 = ('<ul>'
            '<li><b>Data adalah simulasi.</b> Angka menggambarkan data buatan, bukan lini produksi.</li>'
            f'<li>Fakta interaksi tidak terdeteksi. Daya deteksi hanya ±{I(mde_val)} g, sedangkan selisih yang ditanam {I(did_gt_val)} g. '
@@ -463,7 +463,7 @@ def sec7():
            '<li>Residual tidak normal (Shapiro-Wilk). Welch dan Mann-Whitney dilaporkan bersama.</li>'
            f'<li>Asumsi: batas praktis {I(PRACTICAL_DIFF_G)} g, target Cpk {D(CPK_TARGET, 2)}, estimasi ppm dengan sebaran normal, koreksi Holm. Semuanya diuji sensitivitasnya.</li>'
            f'<li>NG hanya {I(dq["NG bersih"])} kejadian, sehingga fail rate dan ppm tidak stabil.</li>'
-           '<li>Dashboard, one-sheet, dan notebook belum dibuat. Repositori belum digabung ke main dan belum dipublikasikan.</li>'
+           '<li>Dashboard belum dipublikasikan. Repositori belum digabung ke main.</li>'
            '<li>Pola yang terlihat belum tentu penyebab. Sesi yang berbeda bisa berbeda lot glue atau hari.</li>'
            '</ul>')
     return ("<h4>7.1 Hasil analisis</h4>" + s71 +
@@ -496,7 +496,7 @@ def evq():
         ["5", "Apakah alur pengerjaan sesuai Design Project?", verdict("Sesuai + penyesuaian"),
          '11 dari 12 langkah dikerjakan; penomoran dan nama file berbeda. <a href="#rp5">Lihat bagian 5</a>.'],
         ["6", "Apakah project output tercapai?", verdict("Sebagian"),
-         "Database, generator, dan laporan jadi; dashboard, one-sheet, dan notebook belum. <a href=\"#rp6\">Lihat bagian 6</a>."],
+         "Database, generator, notebook, dashboard, one-sheet, dan laporan jadi; dashboard belum dipublikasikan. <a href=\"#rp6\">Lihat bagian 6</a>."],
         ["7", "Apakah hasil menjawab pertanyaan utama?", verdict("Sebagian"),
          'Efek oven terbukti dan kondisi terbaik ditemukan; interaksi model tidak terdeteksi. <a href="#rp7">Lihat bagian 7</a>.'],
     ]
