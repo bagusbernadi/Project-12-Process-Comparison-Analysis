@@ -3,7 +3,7 @@
 Aturan:
 - selisih selalu ditulis sebagai rata-rata kiri dikurangi kanan (perbandingan "X vs Y");
 - uji utama per cover glass (Welch t, ANOVA, Tukey); uji sensitivitas per sesi (sesi = unit acak);
-- koreksi Holm untuk keluarga perbandingan yang sama (Q3 dan Q4);
+- koreksi Bonferroni untuk keluarga perbandingan yang sama (Q3 dan Q4);
 - "praktis" = selisih mutlak minimal PRACTICAL_DIFF_G (asumsi, lihat project/docs/definitions.md).
 Keluaran: results/2-analysis/test_results.csv
 """
@@ -43,16 +43,9 @@ def welch(a, b):
     return dict(diff=diff, lo=diff - tcrit * se, hi=diff + tcrit * se, d=diff / sp, stat=t, p=p, na=na, nb=nb)
 
 
-def holm(pvals):
+def bonferroni(pvals):
     p = np.asarray(pvals, float)
-    order = np.argsort(p, kind="mergesort")
-    m = len(p)
-    adj = np.empty(m)
-    running = 0.0
-    for rank, idx in enumerate(order):
-        running = max(running, (m - rank) * p[idx])
-        adj[idx] = min(1.0, running)
-    return adj
+    return np.minimum(1.0, p * len(p))
 
 
 def decide(p_adj, diff):
@@ -101,26 +94,26 @@ for _, t in tkdf.iterrows():
         diff=dif, lo=float(t.lo), hi=float(t.hi),
         keputusan=decide(float(t.p_adj), dif), catatan="uji lanjut setelah ANOVA; p sudah terkoreksi")
 
-# Q3: effect size (Cohen's d) dan CI selisih, tiga pasang kondisi; koreksi Holm
+# Q3: effect size (Cohen's d) dan CI selisih, tiga pasang kondisi; koreksi Bonferroni
 pairs = [("after_oven", "before_oven"), ("after_baked", "before_oven"), ("after_baked", "after_oven")]
 res = [welch(L(a), L(b)) for a, b in pairs]
-adj = holm([r["p"] for r in res])
+adj = bonferroni([r["p"] for r in res])
 for (a, b), r, pa in zip(pairs, res, adj):
     add("Q3", "Welch t + Cohen's d + CI", f"{COND_LABEL[a]} vs {COND_LABEL[b]}", stat=r["stat"], p=r["p"], p_adj=pa,
-        keputusan=decide(pa, r["diff"]), catatan="p terkoreksi Holm (3 pasang)", **{k: r[k] for k in ["diff", "lo", "hi", "d", "na", "nb"]})
+        keputusan=decide(pa, r["diff"]), catatan="p terkoreksi Bonferroni (3 pasang)", **{k: r[k] for k in ["diff", "lo", "hi", "d", "na", "nb"]})
 
-# Q4: Model A vs Model B pada tiap kondisi; koreksi Holm
+# Q4: Model A vs Model B pada tiap kondisi; koreksi Bonferroni
 conds = ["before_oven", "after_oven", "after_baked"]
 res4 = [welch(LM("Model A", c), LM("Model B", c)) for c in conds]
-adj4 = holm([r["p"] for r in res4])
+adj4 = bonferroni([r["p"] for r in res4])
 for c, r, pa in zip(conds, res4, adj4):
     add("Q4", "Welch t (unit)", f"Model A vs Model B, {COND_LABEL[c]}", stat=r["stat"], p=r["p"], p_adj=pa,
-        keputusan=decide(pa, r["diff"]), catatan="p terkoreksi Holm (3 kondisi)", **{k: r[k] for k in ["diff", "lo", "hi", "d", "na", "nb"]})
+        keputusan=decide(pa, r["diff"]), catatan="p terkoreksi Bonferroni (3 kondisi)", **{k: r[k] for k in ["diff", "lo", "hi", "d", "na", "nb"]})
 mw4 = [stats.mannwhitneyu(LM("Model A", c), LM("Model B", c), alternative="two-sided").pvalue for c in conds]
-adj4m = holm(mw4)
+adj4m = bonferroni(mw4)
 for c, p, pa in zip(conds, mw4, adj4m):
     add("Q4", "Mann-Whitney U (sensitivitas)", f"Model A vs Model B, {COND_LABEL[c]}", p=p, p_adj=pa,
-        keputusan=decide(pa, 0.0), catatan="p terkoreksi Holm; tanpa selisih rata-rata")
+        keputusan=decide(pa, 0.0), catatan="p terkoreksi Bonferroni; tanpa selisih rata-rata")
 
 # Q5: ANOVA dua arah model x kondisi (interaksi) pada unit, dan pada rata-rata sesi
 m2 = ols("force_g ~ C(model) * C(condition)", data=push).fit()

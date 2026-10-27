@@ -50,7 +50,7 @@ Penurunan fail rate estimasi (estimated, asumsi sebaran normal): sekitar 5,6 ppm
 - **Interaksi tidak terdeteksi.** Daya tidak dihitung sebelum data dibuat (kesalahan perancangan). Dicatat jujur, tidak diperbaiki dengan mengubah parameter setelah melihat hasil.
 - Satu sesi (S037) menentukan semua NG dan sangat memengaruhi Cpk Model A sebelum oven.
 - Unit bersarang dalam sesi; uji per sesi dilaporkan sebagai pembanding. Residual tidak normal, sehingga Mann-Whitney juga dilaporkan.
-- Asumsi (label di `project/docs/definitions.md`): batas praktis 500 g, target Cpk 1,33, estimasi ppm dengan sebaran normal, koreksi Holm.
+- Asumsi (label di `project/docs/definitions.md`): batas praktis 500 g, target Cpk 1,33, estimasi ppm dengan sebaran normal, koreksi Bonferroni.
 - Dashboard belum dipublikasikan.
 
 ## Menjalankan

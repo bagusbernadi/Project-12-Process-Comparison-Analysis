@@ -13,7 +13,7 @@ Label: **[definisi]** = dari rancangan; **[asumsi]** = tidak ada di rancangan, d
 | Selisih praktis | [asumsi] | 500 g | diuji pada 250, 500, dan 1.000 g (sensitivity.csv) |
 | Target Cpk | [asumsi] | 1,33 | hanya status; tidak mengubah angka |
 | Sesi outlier | [asumsi] | sesi S037 (ditanam, lihat ground_truth.md) dianalisis dengan dan tanpa | Model A sebelum oven berubah dari Cpk 1,46 menjadi 1,93 |
-| Koreksi banyak perbandingan | [asumsi] | Holm untuk Q3 dan Q4 | Bonferroni tidak mengubah keputusan Q4 (lihat test_results.csv) |
+| Koreksi banyak perbandingan | [asumsi] | Bonferroni untuk Q3 dan Q4 (p × jumlah uji, maksimal 1) | Dibandingkan dengan Holm: 2 dari 27 keputusan berubah (Q3 setelah baked vs setelah oven 1 jam, dan Q4 Mann-Whitney setelah baked), keduanya pada p sekitar 0,05; kesimpulan utama tidak berubah |
 | Residual sesi (Q9, Q10) | [asumsi] | nilai minus rata-rata kombinasi model x kondisi | tanpa residual, tren tercampur kondisi |
 | Daya interaksi (MDE) | [asumsi] | (z 1,96 + z 0,84) × SE selisih selisih; SE dari sd dan n kelompok | dihitung di 07, dibandingkan dengan selisih yang ditanam |
 

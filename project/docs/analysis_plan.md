@@ -18,7 +18,7 @@ Pertanyaan utama: apakah kekuatan glue berbeda signifikan antar kondisi proses (
 - Perbandingan dua kelompok: Welch t per cover glass (uji utama) dan Mann-Whitney U (sensitivitas).
 - Tiga kondisi: ANOVA satu arah, lalu Tukey HSD.
 - Dua faktor: ANOVA dua arah model x kondisi, dengan sensitivitas ANOVA pada rata-rata sesi.
-- Banyak perbandingan dalam satu keluarga: koreksi Holm (Q3, Q4).
+- Banyak perbandingan dalam satu keluarga: koreksi Bonferroni (Q3, Q4).
 - Selisih dianggap bermakna praktis bila minimal 500 g (asumsi).
 - Asumsi Cpk dan ppm: sebaran normal. Dicek ulang dengan fail rate aktual dan tanpa sesi outlier.
 

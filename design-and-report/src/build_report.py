@@ -204,9 +204,10 @@ def sec2():
               f'tidak berbeda bermakna: selisih {D(sb.selisih_g, 0)} g, p terkoreksi {pv(sb.p_terkoreksi)}.')
     q3_txt = (f'Sebelum oven ke setelah oven sekitar {D(q1.selisih_g, 0)} g (d {D(q1.cohen_d, 2)}). '
               f'Sebelum oven ke setelah baked sekitar {D(q3.iloc[1].selisih_g, 0)} g. Setelah baked ke setelah oven '
-              f'hanya {D(abs(q3.iloc[2].selisih_g), 0)} g dan termasuk selisih kecil. Rentang dibaca dari CI di tabel 2.1b.')
+              f'hanya {D(abs(q3.iloc[2].selisih_g), 0)} g dan tidak signifikan setelah koreksi Bonferroni (p terkoreksi {pv(q3.iloc[2].p_terkoreksi)}). Rentang dibaca dari CI di tabel 2.1b.')
+    assert q3.iloc[2].keputusan == "Tidak signifikan" and "baked" in q3.iloc[2].perbandingan and "oven 1 jam" in q3.iloc[2].perbandingan
 
-    s21 = (gc + "<p class=\"report-note\">Tabel 2.1b: selisih per pasang kondisi, Holm (Q3) dan Tukey (Q2).</p>" + t21b +
+    s21 = (gc + "<p class=\"report-note\">Tabel 2.1b: selisih per pasang kondisi, Bonferroni (Q3) dan Tukey (Q2).</p>" + t21b +
            qa("Q1", "Apakah kekuatan setelah oven berbeda signifikan dibanding sebelum oven?", "Utama · Welch t, Mann-Whitney", q1_txt) +
            qa("Q2", "Apakah ada perbedaan setelah oven 1 jam dan setelah baked?", "Utama · ANOVA, Tukey", q2_txt, warn=False) +
            qa("Q3", "Seberapa besar perbedaan antar kondisi dalam gram?", "Pendukung · Cohen's d, CI", q3_txt))
@@ -224,11 +225,13 @@ def sec2():
     q4_txt = (f'Pada sebelum oven, Model A {D(q4.iloc[0].selisih_g, 0)} g lebih tinggi (p terkoreksi {pv(q4.iloc[0].p_terkoreksi)}). '
               f'Pada setelah baked, selisihnya {D(q4.iloc[2].selisih_g, 0)} g (p terkoreksi {pv(q4.iloc[2].p_terkoreksi)}). '
               f'Keduanya di bawah {I(PRACTICAL_DIFF_G)} g, jadi selisih kecil. Setelah oven 1 jam tidak berbeda '
-              f'(p terkoreksi {pv(q4.iloc[1].p_terkoreksi)}).')
+              f'(p terkoreksi {pv(q4.iloc[1].p_terkoreksi)}). '
+              f'Sensitivitas Mann-Whitney pada setelah baked: p terkoreksi {pv(q4mw.iloc[2].p_terkoreksi)}, di sekitar batas {D(0.05, 2)}.')
+    assert "baked" in q4mw.iloc[2].perbandingan
     q5_txt = (f'Model {D(s_m.statistik, 2)} dan kondisi signifikan, tetapi interaksi tidak signifikan (F {D(q5r["Interaksi model x kondisi"].statistik, 2)}, '
               f'p {pv(q5r["Interaksi model x kondisi"].p_value)}). Selisih efek oven antar model teramati {I(did_obs)} g, '
               f'sedangkan daya deteksi interaksi hanya sekitar ±{I(mde_val)} g. Interaksi tidak terbukti, dan tidak juga dibantah.')
-    s22 = (t22a + "<p class=\"report-note\">Tabel 2.2a: Welch per kondisi, koreksi Holm, dan sensitivitas Mann-Whitney tersedia di test_results.csv.</p>" +
+    s22 = (t22a + "<p class=\"report-note\">Tabel 2.2a: Welch per kondisi, koreksi Bonferroni, dan sensitivitas Mann-Whitney tersedia di test_results.csv.</p>" +
            qa("Q4", "Apakah Model A dan Model B berbeda kekuatannya pada kondisi yang sama?", "Utama · Welch t per kondisi", q4_txt) +
            "<p class=\"report-note\">Tabel 2.2b: ANOVA dua arah pada unit dan pada rata-rata sesi.</p>" + t22b +
            qa("Q5", "Apakah pengaruh oven sama besar untuk kedua model?", "Utama · ANOVA dua arah", q5_txt, warn=True))
@@ -358,7 +361,7 @@ def sec5():
               [[a, b, c, verdict(d)] for a, b, c, d in steps])
     card = ('<div class="card"><h4>Penyesuaian dan improvisasi yang tidak ada di rancangan</h4><ul>'
             '<li>Skrip 01–11 diberi nomor menurut urutan eksekusi dan dikelompokkan per tahap di project/code/. Tabel di bawah memetakan nama rancangan ke nama file.</li>'
-            '<li>Ditambahkan sensitivitas per sesi, Mann-Whitney, dan koreksi Holm untuk Q3 dan Q4.</li>'
+            '<li>Ditambahkan sensitivitas per sesi, Mann-Whitney, dan koreksi Bonferroni untuk Q3 dan Q4.</li>'
             f'<li>Ditambahkan uji sensitivitas batas praktis ({I(250)}, {I(500)}, {I(1000)} g) dan analisis tanpa sesi S037.</li>'
             '<li>Ditambahkan perhitungan daya deteksi interaksi (MDE) setelah data dibuat. Ini tidak direncanakan.</li>'
             '<li>Batas praktis 500 g dan target Cpk 1,33 adalah asumsi (lihat project/docs/definitions.md).</li>'
@@ -466,7 +469,7 @@ def sec7():
            f'<li>Sesi {GT_OUT} sangat menyebar dan menentukan semua NG. Kapabilitas Model A sebelum oven sensitif terhadap sesi ini (lihat tabel sensitivitas).</li>'
            '<li>Unit bersarang dalam sesi. Uji per unit bisa terlalu percaya diri, sehingga uji per sesi dilaporkan sebagai pembanding.</li>'
            '<li>Residual tidak normal (Shapiro-Wilk). Welch dan Mann-Whitney dilaporkan bersama.</li>'
-           f'<li>Asumsi: batas praktis {I(PRACTICAL_DIFF_G)} g, target Cpk {D(CPK_TARGET, 2)}, estimasi ppm dengan sebaran normal, koreksi Holm. Semuanya diuji sensitivitasnya.</li>'
+           f'<li>Asumsi: batas praktis {I(PRACTICAL_DIFF_G)} g, target Cpk {D(CPK_TARGET, 2)}, estimasi ppm dengan sebaran normal, koreksi Bonferroni. Semuanya diuji sensitivitasnya.</li>'
            f'<li>NG hanya {I(dq["NG bersih"])} kejadian, sehingga fail rate dan ppm tidak stabil.</li>'
            '<li>Dashboard belum dipublikasikan. Repositori belum digabung ke main.</li>'
            '<li>Pola yang terlihat belum tentu penyebab. Sesi yang berbeda bisa berbeda lot glue atau hari.</li>'

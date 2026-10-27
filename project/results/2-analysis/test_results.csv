@@ -8,15 +8,15 @@ Q2,ANOVA satu arah,tiga kondisi,,,,,,,33.4804,1.65516e-14,1.65516e-14,Signifikan
 Q2,Tukey HSD,Setelah oven 1 jam vs Setelah baked,,,182.543,-41.1352,406.221,,,0.1346,0.1346,Tidak signifikan,uji lanjut setelah ANOVA; p sudah terkoreksi
 Q2,Tukey HSD,Sebelum oven vs Setelah baked,,,-564.591,-788.269,-340.913,,,0.0,0.0,Signifikan dan praktis,uji lanjut setelah ANOVA; p sudah terkoreksi
 Q2,Tukey HSD,Sebelum oven vs Setelah oven 1 jam,,,-747.134,-970.812,-523.456,,,0.0,0.0,Signifikan dan praktis,uji lanjut setelah ANOVA; p sudah terkoreksi
-Q3,Welch t + Cohen's d + CI,Setelah oven 1 jam vs Sebelum oven,200,200,747.134,551.508,942.76,0.750835,7.50835,3.97597e-13,1.19279e-12,Signifikan dan praktis,p terkoreksi Holm (3 pasang)
-Q3,Welch t + Cohen's d + CI,Setelah baked vs Sebelum oven,200,200,564.591,380.212,748.97,0.602044,6.02044,4.03423e-09,8.06846e-09,Signifikan dan praktis,p terkoreksi Holm (3 pasang)
-Q3,Welch t + Cohen's d + CI,Setelah baked vs Setelah oven 1 jam,200,200,-182.543,-363.726,-1.36019,-0.19808,-1.9808,0.048313,0.048313,"Signifikan, selisih kecil",p terkoreksi Holm (3 pasang)
-Q4,Welch t (unit),"Model A vs Model B, Sebelum oven",100,100,344.384,66.0085,622.76,0.345153,2.4406,0.0156003,0.0331442,"Signifikan, selisih kecil",p terkoreksi Holm (3 kondisi)
-Q4,Welch t (unit),"Model A vs Model B, Setelah oven 1 jam",100,100,102.78,-170.781,376.341,0.104781,0.740914,0.459624,0.459624,Tidak signifikan,p terkoreksi Holm (3 kondisi)
-Q4,Welch t (unit),"Model A vs Model B, Setelah baked",100,100,307.498,71.1174,543.879,0.362791,2.56532,0.0110481,0.0331442,"Signifikan, selisih kecil",p terkoreksi Holm (3 kondisi)
-Q4,Mann-Whitney U (sensitivitas),"Model A vs Model B, Sebelum oven",,,,,,,,0.0038013,0.0114039,"Signifikan, selisih kecil",p terkoreksi Holm; tanpa selisih rata-rata
-Q4,Mann-Whitney U (sensitivitas),"Model A vs Model B, Setelah oven 1 jam",,,,,,,,0.393125,0.393125,Tidak signifikan,p terkoreksi Holm; tanpa selisih rata-rata
-Q4,Mann-Whitney U (sensitivitas),"Model A vs Model B, Setelah baked",,,,,,,,0.0168091,0.0336182,"Signifikan, selisih kecil",p terkoreksi Holm; tanpa selisih rata-rata
+Q3,Welch t + Cohen's d + CI,Setelah oven 1 jam vs Sebelum oven,200,200,747.134,551.508,942.76,0.750835,7.50835,3.97597e-13,1.19279e-12,Signifikan dan praktis,p terkoreksi Bonferroni (3 pasang)
+Q3,Welch t + Cohen's d + CI,Setelah baked vs Sebelum oven,200,200,564.591,380.212,748.97,0.602044,6.02044,4.03423e-09,1.21027e-08,Signifikan dan praktis,p terkoreksi Bonferroni (3 pasang)
+Q3,Welch t + Cohen's d + CI,Setelah baked vs Setelah oven 1 jam,200,200,-182.543,-363.726,-1.36019,-0.19808,-1.9808,0.048313,0.144939,Tidak signifikan,p terkoreksi Bonferroni (3 pasang)
+Q4,Welch t (unit),"Model A vs Model B, Sebelum oven",100,100,344.384,66.0085,622.76,0.345153,2.4406,0.0156003,0.0468008,"Signifikan, selisih kecil",p terkoreksi Bonferroni (3 kondisi)
+Q4,Welch t (unit),"Model A vs Model B, Setelah oven 1 jam",100,100,102.78,-170.781,376.341,0.104781,0.740914,0.459624,1.0,Tidak signifikan,p terkoreksi Bonferroni (3 kondisi)
+Q4,Welch t (unit),"Model A vs Model B, Setelah baked",100,100,307.498,71.1174,543.879,0.362791,2.56532,0.0110481,0.0331442,"Signifikan, selisih kecil",p terkoreksi Bonferroni (3 kondisi)
+Q4,Mann-Whitney U (sensitivitas),"Model A vs Model B, Sebelum oven",,,,,,,,0.0038013,0.0114039,"Signifikan, selisih kecil",p terkoreksi Bonferroni; tanpa selisih rata-rata
+Q4,Mann-Whitney U (sensitivitas),"Model A vs Model B, Setelah oven 1 jam",,,,,,,,0.393125,1.0,Tidak signifikan,p terkoreksi Bonferroni; tanpa selisih rata-rata
+Q4,Mann-Whitney U (sensitivitas),"Model A vs Model B, Setelah baked",,,,,,,,0.0168091,0.0504273,Tidak signifikan,p terkoreksi Bonferroni; tanpa selisih rata-rata
 Q5,ANOVA dua arah (unit),Model,,,,,,,10.6406,0.0011697,0.0011697,Signifikan,"df interaksi 2; unit bersarang dalam sesi, lihat sensitivitas"
 Q5,ANOVA dua arah (unit),Kondisi,,,,,,,34.0153,1.03222e-14,1.03222e-14,Signifikan,"df interaksi 2; unit bersarang dalam sesi, lihat sensitivitas"
 Q5,ANOVA dua arah (unit),Interaksi model x kondisi,,,,,,,0.94953,0.387509,0.387509,Tidak signifikan,"df interaksi 2; unit bersarang dalam sesi, lihat sensitivitas"
