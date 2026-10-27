@@ -1,0 +1,7 @@
+model,condition,condition_label,n,median_g,mean_g,sd_g,cpk,cpk_lo,cpk_hi,memenuhi_target,ng_count,fail_rate,fail_rate_lo,fail_rate_hi,est_ppm
+Model A,before_oven,Sebelum oven,100,6966.95,6908.553,1117.927264,1.463587,1.24951,1.677665,Memenuhi,2,0.02,0.005502,0.070012,5.647696
+Model A,after_oven,Setelah oven 1 jam,100,7517.65,7534.885,967.290364,1.90735,1.633758,2.180943,Memenuhi,0,0.0,0.0,0.036993,0.005262
+Model A,after_baked,Setelah baked,100,7366.9,7454.701,844.764903,2.152355,1.845515,2.459195,Memenuhi,0,0.0,0.0,0.036993,5.3e-05
+Model B,before_oven,Sebelum oven,100,6634.05,6564.169,861.008006,1.766987,1.512337,2.021636,Memenuhi,0,0.0,0.0,0.036993,0.057598
+Model B,after_oven,Setelah oven 1 jam,100,7481.4,7432.105,994.328854,1.821029,1.559097,2.082961,Memenuhi,0,0.0,0.0,0.036993,0.023396
+Model B,after_baked,Setelah baked,100,7082.2,7147.203,850.406535,2.017546,1.729025,2.306067,Memenuhi,0,0.0,0.0,0.036993,0.000712

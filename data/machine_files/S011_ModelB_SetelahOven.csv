@@ -1,0 +1,27 @@
+Test Program;DS20KG
+Test Mode;Destructive
+Test Speed (mm/s);0,3
+Session ID;S011
+Test Date;28/07/2026
+Model;Model B
+Condition;
+Bonder;BD-02
+Operator;OP-04
+LSL (g);2000
+Sample Count;10
+Average (g);8051,1
+Std Dev (g);1064,3
+Machine Cpk;1,90
+Fail Count;0
+Sample No;Force (g)
+1;7734,8
+2;8326,4
+3;6346,9
+4;6766,7
+5;9944,8
+6;8358,8
+7;8923,9
+8;8194,4
+9;7256,0
+10;8658,4
+5;9944,8

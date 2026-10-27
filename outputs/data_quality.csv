@@ -1,0 +1,14 @@
+metrik,nilai,catatan
+file mesin dibaca,60.0,file CSV di data/machine_files
+baris data mentah,615.0,termasuk baris kotor yang disisipkan
+baris gaya kosong,2.0,dibuang
+baris gaya nol,5.0,dibuang
+baris ganda,8.0,dibuang (baris kedua)
+baris dipakai,600.0,masuk tabel push_results
+persentase baris kotor,0.024390243902439025,(mentah - dipakai) / mentah
+sesi,60.0,tabel test_sessions
+sesi label dari nama file,2.0,kolom Condition di ringkasan kosong
+NG naif (tanpa cleaning),7.0,termasuk gaya nol dan baris ganda
+NG bersih,2.0,setelah cleaning
+rata-rata gaya naif (g),7124.574551386622,tanpa cleaning
+rata-rata gaya bersih (g),7173.602666666668,setelah cleaning

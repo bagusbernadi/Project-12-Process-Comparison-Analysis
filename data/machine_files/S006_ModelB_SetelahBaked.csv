@@ -1,0 +1,26 @@
+Test Program;DS20KG
+Test Mode;Destructive
+Test Speed (mm/s);0,3
+Session ID;S006
+Test Date;05/08/2026
+Model;Model B
+Condition;Setelah baked
+Bonder;BD-01
+Operator;OP-04
+LSL (g);2000
+Sample Count;10
+Average (g);7091,6
+Std Dev (g);415,1
+Machine Cpk;4,09
+Fail Count;0
+Sample No;Force (g)
+1;6466,6
+2;7085,4
+3;7309,5
+4;6936,1
+5;7529,8
+6;7016,5
+7;7862,4
+8;6582,1
+9;7197,6
+10;6930,3

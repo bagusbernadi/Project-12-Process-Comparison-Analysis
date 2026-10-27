@@ -1,0 +1,21 @@
+file,session_id,baris,jenis,detail,tindakan
+S004_ModelB_sebelum oven.csv,S004,,nama file tidak seragam,ejaan label di nama file berbeda,dibaca dengan pemetaan label; nama file tidak diubah
+S011_ModelB_SetelahOven.csv,S011,5.0,baris ganda,nomor sampel 5 muncul lebih dari sekali,baris kedua dibuang
+S011_ModelB_SetelahOven.csv,S011,,label kosong,kolom Condition di ringkasan kosong,label diambil dari nama file: Setelah oven 1 jam
+S012_ModelB_SetelahBaked.csv,S012,11.0,gaya nol,"gaya 0,0 g",dibuang
+S015_ModelA_SetelahBaked.csv,S015,10.0,baris ganda,nomor sampel 10 muncul lebih dari sekali,baris kedua dibuang
+S016_ModelB_sebelum oven.csv,S016,,nama file tidak seragam,ejaan label di nama file berbeda,dibaca dengan pemetaan label; nama file tidak diubah
+S017_ModelB_SetelahOven.csv,S017,12.0,gaya kosong,kolom gaya kosong,dibuang
+S018_ModelB_SetelahBaked.csv,S018,6.0,baris ganda,nomor sampel 6 muncul lebih dari sekali,baris kedua dibuang
+S021_ModelA_SetelahBaked.csv,S021,11.0,gaya nol,"gaya 0,0 g",dibuang
+S026_ModelA_SetelahOven.csv,S026,11.0,gaya nol,"gaya 0,0 g",dibuang
+S028_ModelB_sebelum oven.csv,S028,,nama file tidak seragam,ejaan label di nama file berbeda,dibaca dengan pemetaan label; nama file tidak diubah
+S042_ModelB_SetelahBaked.csv,S042,3.0,baris ganda,nomor sampel 3 muncul lebih dari sekali,baris kedua dibuang
+S043_ModelA_SebelumOven.csv,S043,5.0,baris ganda,nomor sampel 5 muncul lebih dari sekali,baris kedua dibuang
+S043_ModelA_SebelumOven.csv,S043,11.0,gaya nol,"gaya 0,0 g",dibuang
+S045_ModelA_SetelahBaked.csv,S045,,label kosong,kolom Condition di ringkasan kosong,label diambil dari nama file: Setelah baked
+S050_ModelA_SetelahOven.csv,S050,10.0,baris ganda,nomor sampel 10 muncul lebih dari sekali,baris kedua dibuang
+S052_ModelB_SebelumOven.csv,S052,4.0,baris ganda,nomor sampel 4 muncul lebih dari sekali,baris kedua dibuang
+S053_ModelB_SetelahOven.csv,S053,12.0,gaya kosong,kolom gaya kosong,dibuang
+S057_ModelA_SetelahBaked.csv,S057,6.0,baris ganda,nomor sampel 6 muncul lebih dari sekali,baris kedua dibuang
+S058_ModelB_SebelumOven.csv,S058,11.0,gaya nol,"gaya 0,0 g",dibuang

@@ -1,0 +1,26 @@
+Test Program;DS20KG
+Test Mode;Destructive
+Test Speed (mm/s);0,3
+Session ID;S056
+Test Date;11/07/2026
+Model;Model A
+Condition;Setelah oven 1 jam
+Bonder;BD-02
+Operator;OP-02
+LSL (g);2000
+Sample Count;10
+Average (g);7354,1
+Std Dev (g);870,1
+Machine Cpk;2,05
+Fail Count;0
+Sample No;Force (g)
+1;8446,9
+2;7803,4
+3;5873,3
+4;6972,4
+5;8569,9
+6;7894,5
+7;7472,1
+8;7259,5
+9;6957,5
+10;6291,7

@@ -1,0 +1,28 @@
+pertanyaan,uji,perbandingan,n_kiri,n_kanan,selisih_g,ci_bawah_g,ci_atas_g,cohen_d,statistik,p_value,p_terkoreksi,keputusan,catatan
+Q1,Welch t (unit),Setelah oven vs Sebelum oven,200,200,747.134,551.508,942.76,0.750835,7.50835,3.97597e-13,3.97597e-13,Signifikan dan praktis,pooled dua model; unit = cover glass
+Q1,Mann-Whitney U (sensitivitas),Setelah oven vs Sebelum oven,,,,,,,28173.5,1.55834e-12,1.55834e-12,Signifikan dan praktis,tidak mengasumsikan normalitas
+Q1,Welch t per sesi (sensitivitas),Setelah oven vs Sebelum oven,20,20,747.134,455.84,1038.43,1.64197,5.19238,7.27451e-06,7.27451e-06,Signifikan dan praktis,unit = rata-rata sesi; 20 sesi per kondisi
+Q1,Welch t (unit),"Setelah oven vs Sebelum oven, Model A",100,100,626.332,334.769,917.895,0.599174,4.2368,3.50164e-05,3.50164e-05,Signifikan dan praktis,per model (subkelompok)
+Q1,Welch t (unit),"Setelah oven vs Sebelum oven, Model B",100,100,867.936,608.523,1127.35,0.933204,6.59875,3.85531e-10,3.85531e-10,Signifikan dan praktis,per model (subkelompok)
+Q2,ANOVA satu arah,tiga kondisi,,,,,,,33.4804,1.65516e-14,1.65516e-14,Signifikan,pooled dua model; F dengan df 2 dan 597
+Q2,Tukey HSD,Setelah oven 1 jam vs Setelah baked,,,182.543,-41.1352,406.221,,,0.1346,0.1346,Tidak signifikan,uji lanjut setelah ANOVA; p sudah terkoreksi
+Q2,Tukey HSD,Sebelum oven vs Setelah baked,,,-564.591,-788.269,-340.913,,,0.0,0.0,Signifikan dan praktis,uji lanjut setelah ANOVA; p sudah terkoreksi
+Q2,Tukey HSD,Sebelum oven vs Setelah oven 1 jam,,,-747.134,-970.812,-523.456,,,0.0,0.0,Signifikan dan praktis,uji lanjut setelah ANOVA; p sudah terkoreksi
+Q3,Welch t + Cohen's d + CI,Setelah oven 1 jam vs Sebelum oven,200,200,747.134,551.508,942.76,0.750835,7.50835,3.97597e-13,1.19279e-12,Signifikan dan praktis,p terkoreksi Holm (3 pasang)
+Q3,Welch t + Cohen's d + CI,Setelah baked vs Sebelum oven,200,200,564.591,380.212,748.97,0.602044,6.02044,4.03423e-09,8.06846e-09,Signifikan dan praktis,p terkoreksi Holm (3 pasang)
+Q3,Welch t + Cohen's d + CI,Setelah baked vs Setelah oven 1 jam,200,200,-182.543,-363.726,-1.36019,-0.19808,-1.9808,0.048313,0.048313,"Signifikan, selisih kecil",p terkoreksi Holm (3 pasang)
+Q4,Welch t (unit),"Model A vs Model B, Sebelum oven",100,100,344.384,66.0085,622.76,0.345153,2.4406,0.0156003,0.0331442,"Signifikan, selisih kecil",p terkoreksi Holm (3 kondisi)
+Q4,Welch t (unit),"Model A vs Model B, Setelah oven 1 jam",100,100,102.78,-170.781,376.341,0.104781,0.740914,0.459624,0.459624,Tidak signifikan,p terkoreksi Holm (3 kondisi)
+Q4,Welch t (unit),"Model A vs Model B, Setelah baked",100,100,307.498,71.1174,543.879,0.362791,2.56532,0.0110481,0.0331442,"Signifikan, selisih kecil",p terkoreksi Holm (3 kondisi)
+Q4,Mann-Whitney U (sensitivitas),"Model A vs Model B, Sebelum oven",,,,,,,,0.0038013,0.0114039,"Signifikan, selisih kecil",p terkoreksi Holm; tanpa selisih rata-rata
+Q4,Mann-Whitney U (sensitivitas),"Model A vs Model B, Setelah oven 1 jam",,,,,,,,0.393125,0.393125,Tidak signifikan,p terkoreksi Holm; tanpa selisih rata-rata
+Q4,Mann-Whitney U (sensitivitas),"Model A vs Model B, Setelah baked",,,,,,,,0.0168091,0.0336182,"Signifikan, selisih kecil",p terkoreksi Holm; tanpa selisih rata-rata
+Q5,ANOVA dua arah (unit),Model,,,,,,,10.6406,0.0011697,0.0011697,Signifikan,"df interaksi 2; unit bersarang dalam sesi, lihat sensitivitas"
+Q5,ANOVA dua arah (unit),Kondisi,,,,,,,34.0153,1.03222e-14,1.03222e-14,Signifikan,"df interaksi 2; unit bersarang dalam sesi, lihat sensitivitas"
+Q5,ANOVA dua arah (unit),Interaksi model x kondisi,,,,,,,0.94953,0.387509,0.387509,Tidak signifikan,"df interaksi 2; unit bersarang dalam sesi, lihat sensitivitas"
+Q5,ANOVA dua arah per sesi (sensitivitas),Model,,,,,,,5.8624,0.018858,0.018858,Signifikan,unit = rata-rata sesi (n = 60)
+Q5,ANOVA dua arah per sesi (sensitivitas),Kondisi,,,,,,,18.7405,6.58697e-07,6.58697e-07,Signifikan,unit = rata-rata sesi (n = 60)
+Q5,ANOVA dua arah per sesi (sensitivitas),Interaksi model x kondisi,,,,,,,0.523138,0.595631,0.595631,Tidak signifikan,unit = rata-rata sesi (n = 60)
+Q5,Shapiro-Wilk residual (asumsi),residual ANOVA dua arah,,,,,,,0.977647,6.17985e-08,6.17985e-08,Tidak normal (dicatat),"karena n besar, uji ini sensitif; Welch dan ANOVA dianggap cukup kuat"
+Q7,Levene (berpusat median),"tiga kondisi, Model A",,,,,,,0.604793,0.546859,0.546859,Tidak signifikan,rasio simpangan baku maks/min = 1.32
+Q7,Levene (berpusat median),"tiga kondisi, Model B",,,,,,,1.0632,0.346659,0.346659,Tidak signifikan,rasio simpangan baku maks/min = 1.17

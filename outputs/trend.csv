@@ -1,0 +1,5 @@
+kelompok,n_sesi,median_residual_g,sesi_ng,spearman_rho,p_value
+Bulan 2026-07,19,-14.833000000000538,0,,
+Bulan 2026-08,18,25.35299999999961,0,,
+Bulan 2026-09,23,-34.6850000000004,1,,
+Seluruh sesi (Spearman tanggal vs residual),60,,,-0.0231847021130984,0.8604245948486248

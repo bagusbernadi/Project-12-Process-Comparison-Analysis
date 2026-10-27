@@ -1,0 +1,7 @@
+model,condition,condition_label,sequence,n,median_g,q1_g,q3_g,mean_g,sd_g,min_g,max_g,ng_count,fail_rate
+Model A,before_oven,Sebelum oven,1,100,6966.95,6254.25,7547.075,6908.553,1117.927264,1850.0,9252.9,2,0.02
+Model A,after_oven,Setelah oven 1 jam,2,100,7517.65,6849.4,8075.75,7534.885,967.290364,4494.1,10217.6,0,0.0
+Model A,after_baked,Setelah baked,3,100,7366.9,6757.575,8033.925,7454.701,844.764903,4948.9,9701.8,0,0.0
+Model B,before_oven,Sebelum oven,1,100,6634.05,5864.7,7169.375,6564.169,861.008006,4553.7,8222.4,0,0.0
+Model B,after_oven,Setelah oven 1 jam,2,100,7481.4,6778.55,8096.375,7432.105,994.328854,5349.6,9944.8,0,0.0
+Model B,after_baked,Setelah baked,3,100,7082.2,6530.975,7722.925,7147.203,850.406535,4820.3,9253.9,0,0.0

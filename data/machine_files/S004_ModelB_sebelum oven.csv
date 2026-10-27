@@ -1,0 +1,26 @@
+Test Program;DS20KG
+Test Mode;Destructive
+Test Speed (mm/s);0,3
+Session ID;S004
+Test Date;30/09/2026
+Model;Model B
+Condition;Sebelum oven
+Bonder;BD-02
+Operator;OP-02
+LSL (g);2000
+Sample Count;10
+Average (g);6826,4
+Std Dev (g);947,5
+Machine Cpk;1,70
+Fail Count;0
+Sample No;Force (g)
+1;7083,3
+2;5616,3
+3;8043,2
+4;8222,4
+5;6253,0
+6;5535,7
+7;7790,1
+8;6526,4
+9;6582,1
+10;6611,5

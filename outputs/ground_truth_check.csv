@@ -1,0 +1,6 @@
+fakta,nilai_ditanam,nilai_analisis,kriteria,hasil
+1. Setelah oven lebih kuat ±10%,10.0%,11.1% (Q1 p terkoreksi 3.98e-13),selisih ≤ 2 poin persentase dan Q1 signifikan,Ditemukan
+2. Model B ±5% lebih lemah,5.0%,3.4%; Q4 signifikan pada 2 dari 3 kondisi,selisih ≤ 2 poin persentase dan Q4 signifikan minimal 1 kondisi,Ditemukan
+3. Efek oven lebih besar di Model B (interaksi),624 g (selisih kenaikan),242 g; p interaksi 0.388; MDE ±554 g,Q5 interaksi signifikan dengan arah B > A,Tidak ditemukan (daya rendah)
+4. Satu sesi sangat menyebar dengan 2 unit NG,"S037, 2 NG","sesi dengan sd terbesar S037 (2268 g), NG = 2",sesi sd terbesar adalah sesi yang ditanam dan NG sesuai,Ditemukan
+5. Data kotor 2–3%,2–3% (15 baris),"2.44% (15 baris): ganda 8, gaya nol 5, kosong 2",persentase 2–3% dan jumlah tiap jenis sama dengan yang disisipkan,Ditemukan

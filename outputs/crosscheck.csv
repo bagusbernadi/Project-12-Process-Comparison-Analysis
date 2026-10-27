@@ -1,0 +1,29 @@
+pemeriksaan,nilai_sql_atau_mesin,nilai_pandas,selisih,hasil
+jumlah baris push_results,600.0,600.0,0.0,PASS
+jumlah sesi test_sessions,60.0,60.0,0.0,PASS
+n Model A / before_oven,100.0,100.0,0.0,PASS
+median Model A / before_oven,6966.95,6966.95,0.0,PASS
+sd Model A / before_oven,1117.927264,1117.9272642586043,2.59e-07,PASS
+NG Model A / before_oven,2.0,2.0,0.0,PASS
+n Model A / after_oven,100.0,100.0,0.0,PASS
+median Model A / after_oven,7517.65,7517.65,0.0,PASS
+sd Model A / after_oven,967.290364,967.2903640368728,3.7e-08,PASS
+NG Model A / after_oven,0.0,0.0,0.0,PASS
+n Model A / after_baked,100.0,100.0,0.0,PASS
+median Model A / after_baked,7366.9,7366.9,0.0,PASS
+sd Model A / after_baked,844.764903,844.7649027440006,2.56e-07,PASS
+NG Model A / after_baked,0.0,0.0,0.0,PASS
+n Model B / before_oven,100.0,100.0,0.0,PASS
+median Model B / before_oven,6634.05,6634.05,0.0,PASS
+sd Model B / before_oven,861.008006,861.0080058867109,1.13e-07,PASS
+NG Model B / before_oven,0.0,0.0,0.0,PASS
+n Model B / after_oven,100.0,100.0,0.0,PASS
+median Model B / after_oven,7481.4,7481.4,0.0,PASS
+sd Model B / after_oven,994.328854,994.3288537343602,2.66e-07,PASS
+NG Model B / after_oven,0.0,0.0,0.0,PASS
+n Model B / after_baked,100.0,100.0,0.0,PASS
+median Model B / after_baked,7082.2,7082.2,0.0,PASS
+sd Model B / after_baked,850.406535,850.4065352779423,2.78e-07,PASS
+NG Model B / after_baked,0.0,0.0,0.0,PASS
+"Cpk mesin vs hitung ulang (60 sesi, toleransi 0,01)",60.0,60.0,0.0,PASS
+fail count mesin vs hitung ulang (60 sesi),2.0,2.0,0.0,PASS
